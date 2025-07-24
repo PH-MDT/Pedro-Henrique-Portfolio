@@ -3,7 +3,7 @@ import { ExperienceItem } from "./experience-item";
 import { WorkExperience as IWorkExperience } from "@/app/types/work-experience";
 
 type WorkExperiencePros = {
-  experiences: IWorkExperience[]
+  experiences: IWorkExperience[];
 };
 
 export const WorkExperience = ({ experiences }: WorkExperiencePros) => {

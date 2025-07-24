@@ -7,6 +7,8 @@ import { TechBadge } from "@/app/components/tech-badge"
 import { HomePageInfo } from "@/app/types/page-info"
 import Image from "next/image"
 import { HiArrowNarrowRight } from 'react-icons/hi'
+import { motion } from 'framer-motion'
+import { techBadgeAnimation } from "@/app/lib/animations"
 
 type HeroSectionProps = {
     homeInfo:HomePageInfo
@@ -22,7 +24,13 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
     return(
         <section className="w-full lg:h-[755px] bg-hero-image bg-cover bg-center bg-no-repeat flex flex-col justify-end pb-10 sm:pb-32 py-32 lg:pb-[110px] ">
             <div className= "container flex items-star justify-between flex-col-reverse lg:flex-row">
-                <div className="w-full lg:max-w-[530px]">
+                <motion.div 
+                className="w-full lg:max-w-[530px]"
+                initial={{ opacity: 0, x: -100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                >
                     <p className="font-mono text-cyan-300">Oi, prazer! Meu nome é</p>
                     <h2 className="text-4xl font-medium mt-2">Pedro Henrique</h2>
 
@@ -31,8 +39,13 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                     </div>
                     
                     <div className="flex flex-wrap gap-x-2 gap-y-3 lg:max-w-[340px]">
-                       {homeInfo.technologies.map((tech) => (
-                            <TechBadge name={tech.name}
+                       {homeInfo.technologies.map((tech, i) => (
+                            <TechBadge 
+                                name={tech.name}
+                                key={`intro-tech-${tech.name}`}
+                                {...techBadgeAnimation}
+                                transition={{ duration: 0.3, delay: i * 0.1 }}
+                            
                             />
                         ))}
                     </div>
@@ -57,8 +70,15 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                            ))}
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
+                <motion.div
+                    initial={{ opacity: 0, y: 200, scale: 0.5 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 200, scale: 0.5 }}
+                    transition={{ duration: 0.5 }}
+                    className="origin-center">
+                   
                    <div className="relative w-[400px] h-[480px] flex justify-center items-center lg:w-[400px] lg:h-[480px] md:w-[340px] md:h-[404px] sm:w-[280px] sm:h-[340px]">
                         <Image
                             src="/images/profile-pic-v8.png" // Substitua pelo caminho da sua nova foto
@@ -76,6 +96,7 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                             }}
                         />
                     </div>
+                </motion.div>
             </div>
         </section>
 
