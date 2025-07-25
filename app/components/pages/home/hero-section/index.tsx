@@ -25,7 +25,7 @@ const Notification = ({
 }) => {
   return (
     <motion.div
-       className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md text-sm font-medium flex items-center gap-2"
+       className="fixed top-5 left-1/2 transform -translate-x-1/2 sm:top-5 sm:left-1/2 sm:-translate-x-1/2 bottom-4 sm:bottom-auto bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md text-sm font-medium flex items-center gap-2 w-[90%] max-w-xs sm:max-w-md"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -20 }}
       transition={{ duration: 0.3 }}
