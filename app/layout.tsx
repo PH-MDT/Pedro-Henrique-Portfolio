@@ -7,6 +7,7 @@ import { Footer } from './components/footer'
 import { BackToTop } from './components/back-to-top'
 import { Toaster } from './components/toaster'
 
+
 export const metadata = {
   title: {
     default: 'Home',
@@ -39,8 +40,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {children}
         <ContactForm />
         <Footer />
-      </body>
         <BackToTop />
+      </body>
+        
     </html>
   )
 }

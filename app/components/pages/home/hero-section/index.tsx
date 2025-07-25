@@ -9,10 +9,128 @@ import Image from "next/image"
 import { HiArrowNarrowRight } from 'react-icons/hi'
 import { motion } from 'framer-motion'
 import { techBadgeAnimation } from "@/app/lib/animations"
+import { useState, useEffect } from "react";
+import { FaDownload } from "react-icons/fa";
 
 type HeroSectionProps = {
     homeInfo:HomePageInfo
 }
+
+const Notification = ({
+  message,
+  show,
+}: {
+  message: string;
+  show: boolean;
+}) => {
+  return (
+    <motion.div
+       className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md text-sm font-medium flex items-center gap-2"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: show ? 1 : 0, y: show ? 0 : -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      {message}
+    </motion.div>
+  );
+};
+
+export default function DownloadButton() {
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+
+  const handleDownload = () => {
+    setIsDownloading(true);
+    setShowNotification(true);
+
+    setTimeout(() => {
+      const pdfPath = "/Curriculo Pedro 2025.pdf";
+      const link = document.createElement("a");
+      link.href = pdfPath;
+      link.download = "Curriculo-PedroHenrique.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setIsDownloading(false);
+      setShowNotification(false);
+    }, 2000);
+  };
+
+  return (
+    <>
+      <Button
+        className="w-max shadow-button mb-3 sm:mb-0 flex items-center gap-2 h-12"
+        onClick={handleDownload}
+        disabled={isDownloading}
+      >
+        CV
+        <motion.div
+          animate={isDownloading ? { scale: [1, 1.3, 1] } : {}}
+          transition={{ duration: 0.4, repeat: isDownloading ? Infinity : 0 }}
+        >
+          <FaDownload size={20} />
+        </motion.div>
+      </Button>
+
+      <Notification message="Download iniciado..." show={showNotification} />
+    </>
+  );
+}
+
+// Efeito de digitação
+const TypingEffect = ({ text }: { text: string }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+  const typingSpeed = 100;
+  const resetDelay = 1000;
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isTyping && index < text.length) {
+      timeout = setTimeout(() => {
+        setDisplayedText((prev) => prev + text[index]);
+        setIndex((prevIndex) => prevIndex + 1);
+      }, typingSpeed);
+    } else if (index === text.length && isTyping) {
+      timeout = setTimeout(() => {
+        setIsTyping(false);
+      }, resetDelay);
+    } else if (!isTyping) {
+      timeout = setTimeout(() => {
+        setDisplayedText("");
+        setIndex(0);
+        setIsTyping(true);
+      }, resetDelay);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [text, index, isTyping]);
+
+  const placeholder = " ".repeat(text.length);
+
+  return (
+    <div
+      className={`
+              text-shadow-subtleNeonGreen       
+              animate-pulseNeon       
+              text-green            
+              inline-block
+            `}
+      style={{
+        display: "inline-block",
+        textAlign: "center",
+        width: `${text.length}ch`,
+        whiteSpace: "pre-wrap",
+      }}
+    >
+      {displayedText || placeholder}
+    </div>
+  );
+};
+
 
 export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
     const handleContact = () => {
@@ -50,11 +168,17 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                         ))}
                     </div>
 
-                    <div className="mt-6 lg:mt-10 flex sm:items-center sm:gap-5 flex-col sm:flex-row">
-                        <Button className="w-max shadow-button" onClick={handleContact}>
-                            Entre em contato
-                            <HiArrowNarrowRight size={18} />
+                    <div className="mt-6 lg:mt-10 flex flex-wrap items-center gap-3 sm:gap-5">
+                      <div className="flex flex-wrap gap-3 sm:gap-5">
+                        <DownloadButton />
+                        <Button
+                          className="w-max shadow-button h-12"
+                          onClick={handleContact}
+                        >
+                          Entre em contato
+                          <HiArrowNarrowRight size={18} />
                         </Button>
+                      </div>
 
                          <div className="text-2xl text-gray-500 flex items-center h-20 gap-3">
                             {homeInfo.socials.map((contact, index) => (
