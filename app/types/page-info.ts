@@ -36,5 +36,5 @@ export type ProjectsPagesStaticData = {
 
 export type HomePageData = {
   page: HomePageInfo;
-  workExperiences: WorkExperience;
+  workExperiences: WorkExperience[];
 };
