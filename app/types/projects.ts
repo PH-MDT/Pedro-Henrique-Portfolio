@@ -15,7 +15,7 @@ export type ProjectSection = {
 }
 export type Project = {
     slug: string
-    thubmnail: {
+    thumbnail: {
         url: string
     }
     title: string
