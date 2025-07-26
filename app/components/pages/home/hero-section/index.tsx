@@ -203,24 +203,28 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                     transition={{ duration: 0.5 }}
                     className="origin-center">
                    
-                   <div className="relative w-[400px] h-[480px] flex justify-center items-center lg:w-[400px] lg:h-[480px] md:w-[340px] md:h-[404px] sm:w-[280px] sm:h-[340px]">
-                        <Image
-                            src="/images/profile-pic-v8.png" // Substitua pelo caminho da sua nova foto
-                            alt="Foto de perfil de Pedro Henrique"
-                            width={400}
-                            height={480}
-                            priority
-                            quality={100}
-                            unoptimized
-                            className="object-contain max-w-full h-auto"
-                            style={{
-                            objectPosition: 'center',
-                            WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
-                            maskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
-                            
-                            }}
-                        />
-                    </div>
+                   <div className="relative flex justify-center items-center mx-auto
+  w-[400px] h-[480px]
+  md:w-[340px] md:h-[404px]
+  sm:w-[280px] sm:h-[340px]
+">
+  <Image
+    src="/images/profile-pic-v8.png"
+    alt="Foto de perfil de Pedro Henrique"
+    width={400}
+    height={480}
+    priority
+    quality={100}
+    unoptimized
+    className="object-contain max-w-full h-auto"
+    style={{
+      objectPosition: 'center',
+      WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
+      maskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
+    }}
+  />
+</div>
+
                 </motion.div>
             </div>
         </section>
