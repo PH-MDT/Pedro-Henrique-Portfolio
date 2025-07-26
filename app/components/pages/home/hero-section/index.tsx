@@ -203,16 +203,12 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                     transition={{ duration: 0.5 }}
                     className="origin-center">
                    
-                   <div className="relative flex justify-center items-center mx-auto
-  w-[400px] h-[480px]
-  md:w-[340px] md:h-[404px]
-  sm:w-[280px] sm:h-[340px]
-">
+                   <div className="relative w-[240px] h-[290px] flex justify-center items-center sm:w-[280px] sm:h-[340px] md:w-[340px] md:h-[404px] lg:w-[380px] lg:h-[450px]">
   <Image
     src="/images/profile-pic-v8.png"
     alt="Foto de perfil de Pedro Henrique"
-    width={400}
-    height={480}
+    width={380}
+    height={450}
     priority
     quality={100}
     unoptimized
