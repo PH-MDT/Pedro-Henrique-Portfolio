@@ -204,7 +204,7 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                     className="origin-center">
                    
                    <div className="w-full flex justify-center">
-                    <div className="relative w-[240px] h-[290px] flex justify-center items-center sm:w-[280px] sm:h-[340px] md:w-[340px] md:h-[404px] lg:w-[380px] lg:h-[450px]">
+                    <div className="relative w-[260px] h-[310px] flex justify-center items-center sm:w-[280px] sm:h-[340px] md:w-[340px] md:h-[404px] lg:w-[380px] lg:h-[450px]">
                       <Image
                         src="/images/profile-pic-v8.png"
                         alt="Foto de perfil de Pedro Henrique"
