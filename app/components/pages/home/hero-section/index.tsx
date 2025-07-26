@@ -205,6 +205,10 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                    
                   <div className="w-full flex justify-center">
                     <div className="relative w-[260px] h-[310px] flex justify-center items-center -translate-y-12 sm:translate-y-0 sm:w-[280px] sm:h-[340px] md:w-[340px] md:h-[404px] lg:w-[380px] lg:h-[450px]">
+                      
+                      {/* Camada escura para bloquear o fundo que vaza pela máscara */}
+                      <div className="absolute inset-0 bg-neutral-900 rounded-full z-0" />
+
                       <Image
                         src="/images/profile-pic-v8.png"
                         alt="Foto de perfil de Pedro Henrique"
@@ -213,7 +217,7 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                         priority
                         quality={100}
                         unoptimized
-                        className="object-contain max-w-full h-auto"
+                        className="object-contain max-w-full h-auto z-10"
                         style={{
                           objectPosition: 'center',
                           WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
@@ -222,6 +226,7 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                       />
                     </div>
                   </div>
+
 
 
 
