@@ -1,3 +1,4 @@
+import { Carousel } from "./components/carousel";
 import { HeroSection } from "./components/pages/home/hero-section";
 import { HighLightedProjects } from "./components/pages/home/highlighted-projects";
 import { KnownTeachs } from "./components/pages/home/known-techs";
@@ -70,6 +71,7 @@ export default async function Home() {
     <>
       <HeroSection homeInfo={pageData} />
       <KnownTeachs techs={pageData.knownTechs} />
+      <Carousel />
       <HighLightedProjects projects={pageData.highlightProjects} />
       <WorkExperience experiences= {workExperiences} />
     </>

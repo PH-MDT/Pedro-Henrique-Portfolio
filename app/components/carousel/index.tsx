@@ -47,34 +47,30 @@ export const Carousel: React.FC = () => {
   const certifications = [
     {
       title: "Certificação 1",
-      content: "Conteúdo da certificação 1",
-      image: "/certalura01.jpg",
+      content: "Programação para internet",
+      image: "/Documentos/Certificadoprogramacao.png",
     },
     {
       title: "Certificação 2",
-      content: "Conteúdo da certificação 2",
-      image: "/ImersaoFront.jpg",
+      content: "Workshop: TÓPICOS DE BIG DATA EM PYTHON",
+      image: "/Documentos/Certificadobigdata.png",
     },
     {
       title: "Certificação 3",
-      content: "Conteúdo da certificação 3",
-      image: "/download_page-0001.jpg",
+      content: "Minicurso: C DESCOMPLICADO APRENDA A PROGRAMAR COM EFICIÊNCIA - Parte I",
+      image: "/Documentos/CertificadoemC.png",
     },
     {
       title: "Certificação 4",
-      content: "Conteúdo da certificação 4",
-      image: "/certifWyden.jpg",
+      content: "Minicurso: C DESCOMPLICADO APRENDA A PROGRAMAR COM EFICIÊNCIA - Parte II",
+      image: "/Documentos/CertificadoemCII.png",
     },
     {
       title: "Certificação 5",
-      content: "Conteúdo da certificação 5",
-      image: "/CertifHashtag.jpg",
+      content: "Minicurso: C DESCOMPLICADO APRENDA A PROGRAMAR COM EFICIÊNCIA - Parte III",
+      image: "/Documentos/CertificadoemCIII.png",
     },
-    {
-      title: "Certificação 6",
-      content: "Conteúdo da certificação 6",
-      image: "/certifFullStack.jpg",
-    },
+    
   ];
 
   const [active, setActive] = useState(0);
@@ -92,7 +88,7 @@ export const Carousel: React.FC = () => {
 
   return (
     <section className="container py-16">
-      <SectionTitle subtitle="Subtítulo do carrossel" title="Título do carrossel" />
+      <SectionTitle subtitle="competências" title="Certificados" />
       <div>
         <HorizontalDivider />
       </div>

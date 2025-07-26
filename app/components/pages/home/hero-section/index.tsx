@@ -25,7 +25,7 @@ const Notification = ({
 }) => {
   return (
     <motion.div
-       className="fixed top-5 left-1/2 transform -translate-x-1/2 sm:top-5 sm:left-1/2 sm:-translate-x-1/2 bottom-4 sm:bottom-auto bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md text-sm font-medium flex items-center gap-2 w-[90%] max-w-xs sm:max-w-md"
+       className="fixed top-5 left-1/2 transform bg-cyan-500 text-white px-6 py-3 rounded-lg shadow-md text-sm font-medium"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -20 }}
       transition={{ duration: 0.3 }}
@@ -211,12 +211,13 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                             height={480}
                             priority
                             quality={100}
+                            unoptimized
                             className="object-contain max-w-full h-auto"
                             style={{
                             objectPosition: 'center',
                             WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
                             maskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
-                            filter: 'grayscale(80%) brightness(80%)',
+                            
                             }}
                         />
                     </div>

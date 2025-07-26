@@ -3,42 +3,39 @@
 import { TbArrowNarrowUp } from "react-icons/tb"
 import { Button } from "../button"
 import { useCallback, useEffect, useState } from "react"
-import { AnimatePresence } from "framer-motion"
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from "framer-motion"
 
 export const BackToTop = () => {
-    const [show, setShow] = useState(false)
-    
-    const scrollTopTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth'})
-    }
+  const [show, setShow] = useState(false)
 
-    const handleScroll = useCallback(() => {
-        if(!show && window.scrollY > 500) setShow(true)
-        if(show && window.scrollY <= 500) setShow(false)
-    }, [show])
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [handleScroll])
+  const handleScroll = useCallback(() => {
+    if (!show && window.scrollY > 500) setShow(true)
+    if (show && window.scrollY <= 500) setShow(false)
+  }, [show])
 
-    return (
-        <AnimatePresence> 
-            {show && (
-                <motion.div 
-                    className="fixed right-4 bottom-4 z-20"
-                    initial={{ opacity: 0, right: -10 }}
-                    animate={{ opacity: 1, right: 16 }}
-                    exit={{ opacity: 0, right: -10 }}
-                >
-                    <Button onClick={scrollTopTop} className="shadow-lg shadow-cyan-500/20">
-                    <TbArrowNarrowUp size={20} />
-                    </Button>   
-                </motion.div>
-                )}
-                
-        </AnimatePresence>
-    )
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
 
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className="fixed right-4 bottom-4 z-20"
+          initial={{ opacity: 0, right: -10 }}
+          animate={{ opacity: 1, right: 16 }}
+          exit={{ opacity: 0, right: -10 }}
+        >
+          <Button onClick={scrollToTop} className="shadow-lg shadow-cyan-500/20">
+            <TbArrowNarrowUp size={20} />
+          </Button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
 }
