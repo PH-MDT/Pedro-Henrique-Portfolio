@@ -204,24 +204,25 @@ export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
                     className="origin-center">
                    
                   <div className="w-full flex justify-center">
-  <div className="relative w-[260px] h-[310px] flex justify-center items-center -mt-12 sm:mt-0 sm:w-[280px] sm:h-[340px] md:w-[340px] md:h-[404px] lg:w-[380px] lg:h-[450px]">
-    <Image
-      src="/images/profile-pic-v8.png"
-      alt="Foto de perfil de Pedro Henrique"
-      width={380}
-      height={450}
-      priority
-      quality={100}
-      unoptimized
-      className="object-contain max-w-full h-auto"
-      style={{
-        objectPosition: 'center',
-        WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
-        maskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
-      }}
-    />
-  </div>
-</div>
+                    <div className="relative w-[260px] h-[310px] flex justify-center items-center -translate-y-12 sm:translate-y-0 sm:w-[280px] sm:h-[340px] md:w-[340px] md:h-[404px] lg:w-[380px] lg:h-[450px]">
+                      <Image
+                        src="/images/profile-pic-v8.png"
+                        alt="Foto de perfil de Pedro Henrique"
+                        width={380}
+                        height={450}
+                        priority
+                        quality={100}
+                        unoptimized
+                        className="object-contain max-w-full h-auto"
+                        style={{
+                          objectPosition: 'center',
+                          WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
+                          maskImage: 'radial-gradient(circle at center, black 60%, transparent 80%)',
+                        }}
+                      />
+                    </div>
+                  </div>
+
 
 
 
