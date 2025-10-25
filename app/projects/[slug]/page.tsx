@@ -5,109 +5,109 @@ import { fetchHygraphQuery } from "@/app/utils/fetch-hygraph-query";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 type ProjectProps = {
-    params: {
-        slug: string;
-    }
-}
+  params: { slug: string };
+  searchParams: { lang: string };
+};
 
-
-const getProjectDetails = async (slug: string): Promise<ProjectPageData> => {
-    const query = `
-    query ProjectQuery {
-        project(where: {slug: "${slug}"}) {
-        pageThumbnail {
-            url
-        }
-        thumbnail {
-            url
-        }
+const getProjectDetails = async (
+  slug: string,
+  lang: string
+): Promise<ProjectPageData> => {
+  const query = `
+    query ProjectDetailsQuery($slug: String!, $locale: Locale!) {
+      project(where: {slug: $slug}, locales: [$locale]) {
+        pageThumbnail { url }
+        thumbnail { url }
         sections {
-            title
-            image {
-            url
-            }
+          title
+          image { url }
         }
         title
         shortDescription
         description {
-            raw
-            text
+          raw
+          text
         }
-        technologies {
-            name
+        technologies(first: 100) {
+          name
+          category
         }
         liveProjectUrl
         githubUrl
-        }
+      }
     }
-    `
-    
-        const data = fetchHygraphQuery<ProjectPageData>(
-        query,
-        1000 * 60 * 60 * 24, // 1 day
-        )
+  `;
 
-    return data
+  return fetchHygraphQuery(query, { slug, locale: lang },0);
+};
+
+export default async function Project({ params, searchParams }: ProjectProps) {
+  const lang = searchParams.lang || "en";
+  const data = await getProjectDetails(params.slug, lang);
+
+  if (!data || !data.project) {
+    return <h2>Projeto não encontrado.</h2>;
+  }
+
+  return (
+    <>
+      <ProjectDetails project={data.project} />
+      <ProjectSections sections={data.project.sections} />
+    </>
+  );
 }
 
-export default async function Project({ params: { slug } }:ProjectProps) {
-    const { project } = await getProjectDetails(slug)
-    
-    if (!project?.title) return notFound()
-    
-    return (
-        <>
-            <ProjectDetails project={project} />
-            <ProjectSections  sections={project.sections}/>
-        </>
-    )
-
-}
-
+// =======================================================================
+// PODE APAGAR OU COMENTAR ESTA FUNÇÃO INTEIRA
+// =======================================================================
+/*
 export async function generateStaticParams() {
-    const query = `
-        query ProjectsSlugsQuery {
-            projects(first: 100) {
-                slug
-            }
-        }
-    `
+  const query = `
+    query ProjectsSlugsQuery() {
+      projects(first: 100){
+        slug
+      }
+    }
+  `
+  const { projects } = await fetchHygraphQuery<ProjectsPageStaticData>(query)
 
-    const { projects } = await fetchHygraphQuery<ProjectsPagesStaticData>(query)
-    
-    return projects
+  return projects
 }
+*/
+// =======================================================================
 
-// =========================================================
-// FUNÇÃO CORRIGIDA ABAIXO
-// =========================================================
 export async function generateMetadata({
-    params: { slug }
+  params,
+  searchParams,
 }: ProjectProps): Promise<Metadata> {
-    const data = await getProjectDetails(slug)
-    const project = data?.project; // Adiciona ?. por segurança
+  const lang = searchParams.lang || "en";
+  const data = await getProjectDetails(params.slug, lang);
 
-    // Se o projeto não existir, retorna metadados padrão
-    if (!project?.title) {
-        return {
-            title: "Projeto não encontrado"
-        }
-    }
-    
-    return {
-        title: project.title,
-        // Adiciona ?. para description.text
-        description: project.description?.text, 
-        openGraph: {
-            images: [
-                {
-                    // A CORREÇÃO PRINCIPAL ESTÁ AQUI
-                    url: project.thumbnail?.url, 
-                    width:1200,
-                    height:630,
-                }
+  if (!data || !data.project) {
+    return { title: "Projeto não encontrado" };
+  }
+
+  const { project } = data;
+
+  return {
+    title: project.title,
+    description: project.description.text,
+    openGraph: {
+      images: [
+        // Adicionamos uma verificação: só incluir a imagem se ela existir
+        ...(project.thumbnail
+          ? [
+              {
+                url: project.thumbnail.url,
+                width: 1200,
+                height: 630,
+              },
             ]
-        }
-    }
+          : []),
+      ],
+    },
+  };
 }
