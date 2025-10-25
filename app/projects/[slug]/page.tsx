@@ -1,201 +1,105 @@
 import { ProjectDetails } from "@/app/components/pages/home/project/project-details";
-
 import { ProjectSections } from "@/app/components/pages/home/project/project-details/project-sections";
-
-import { ProjectPageData, ProjectsPageData, ProjectsPagesStaticData } from "@/app/types/page-info";
-
+import {
+  ProjectPageData,
+  ProjectsPageData,
+  ProjectsPagesStaticData,
+} from "@/app/types/page-info";
 import { fetchHygraphQuery } from "@/app/utils/fetch-hygraph-query";
-
 import { Metadata } from "next";
-
 import { notFound } from "next/navigation";
 
-
-
 type ProjectProps = {
-
-    params: {
-
-        slug: string;
-
-    }
-
-}
-
-
-
-
+  params: {
+    slug: string;
+  };
+};
 
 const getProjectDetails = async (slug: string): Promise<ProjectPageData> => {
-
-    const query = `
-
+  const query = `
     query ProjectQuery {
-
         project(where: {slug: "${slug}"}) {
-
         pageThumbnail {
-
             url
-
         }
-
         thumbnail {
-
             url
-
         }
-
         sections {
-
             title
-
             image {
-
             url
-
             }
-
         }
-
         title
-
         shortDescription
-
         description {
-
             raw
-
             text
-
         }
-
         technologies {
-
             name
-
         }
-
         liveProjectUrl
-
         githubUrl
-
         }
-
     }
+    `;
 
-    `
+  const data = fetchHygraphQuery<ProjectPageData>(
+    query,
+    1000 * 60 * 60 * 24 // 1 day
+  );
 
-   
+  return data;
+};
 
-        const data = fetchHygraphQuery<ProjectPageData>(
+export default async function Project({ params: { slug } }: ProjectProps) {
+  const { project } = await getProjectDetails(slug);
 
-        query,
+  if (!project) return notFound();
 
-        1000 * 60 * 60 * 24, // 1 day
-
-        )
-
-
-
-    return data
-
+  return (
+    <>
+      <ProjectDetails project={project} />
+      <ProjectSections sections={project.sections} />
+    </>
+  );
 }
-
-
-
-export default async function Project({ params: { slug } }:ProjectProps) {
-
-    const { project } = await getProjectDetails(slug)
-
-   
-
-    if (!project?.title) return notFound()
-
-   
-
-    return (
-
-        <>
-
-            <ProjectDetails project={project} />
-
-            <ProjectSections  sections={project.sections}/>
-
-        </>
-
-    )
-
-
-
-}
-
-
 
 export async function generateStaticParams() {
-
-    const query = `
-
+  const query = `
         query ProjectsSlugsQuery {
-
             projects(first: 100) {
-
                 slug
-
             }
-
         }
+    `;
 
-    `
+  const { projects } = await fetchHygraphQuery<ProjectsPagesStaticData>(query);
 
-
-
-    const { projects } = await fetchHygraphQuery<ProjectsPagesStaticData>(query)
-
-   
-
-    return projects
-
+  return projects;
 }
 
-
-
 export async function generateMetadata({
-
-    params: { slug }
-
+  params: { slug },
 }: ProjectProps): Promise<Metadata> {
+  const data = await getProjectDetails(slug);
+  const project = data.project;
 
-    const data = await getProjectDetails(slug)
-
-    const project = data.project;
-
-   
-
-    return {
-
-        title: project.title,
-
-        description: project.description.text,
-
-        openGraph: {
-
-            images: [
-
-                {
-
-                    url: project.thumbnail.url,
-
-                    width:1200,
-
-                    height:630,
-
-                }
-
-            ]
-
-        }
-
-    }
-
+  return {
+    title: project.title,
+    description: project.description?.text,
+    openGraph: {
+      images: project.thumbnail
+        ? [
+            {
+              url: project.thumbnail.url,
+              width: 1200,
+              height: 630,
+            },
+          ]
+        : [],
+    },
+  };
 }
