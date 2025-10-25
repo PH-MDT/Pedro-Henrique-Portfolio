@@ -1,6 +1,6 @@
 import { ProjectDetails } from "@/app/components/pages/home/project/project-details";
 import { ProjectSections } from "@/app/components/pages/home/project/project-details/project-sections";
-import { ProjectPageData, ProjectsPageData, ProjectsPagesStaticData } from "@/app/types/page-info";
+import { ProjectPageData, ProjectsPagesStaticData } from "@/app/types/page-info";
 import { fetchHygraphQuery } from "@/app/utils/fetch-hygraph-query";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -79,19 +79,31 @@ export async function generateStaticParams() {
     return projects
 }
 
+// =========================================================
+// FUNÇÃO CORRIGIDA ABAIXO
+// =========================================================
 export async function generateMetadata({
     params: { slug }
 }: ProjectProps): Promise<Metadata> {
     const data = await getProjectDetails(slug)
-    const project = data.project;
+    const project = data?.project; // Adiciona ?. por segurança
+
+    // Se o projeto não existir, retorna metadados padrão
+    if (!project?.title) {
+        return {
+            title: "Projeto não encontrado"
+        }
+    }
     
     return {
         title: project.title,
-        description: project.description.text,
+        // Adiciona ?. para description.text
+        description: project.description?.text, 
         openGraph: {
             images: [
                 {
-                    url: project.thumbnail.url,
+                    // A CORREÇÃO PRINCIPAL ESTÁ AQUI
+                    url: project.thumbnail?.url, 
                     width:1200,
                     height:630,
                 }
