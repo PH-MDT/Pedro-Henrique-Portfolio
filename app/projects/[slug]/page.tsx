@@ -12,13 +12,18 @@ type ProjectProps = {
   searchParams: { lang: string };
 };
 
+// =========================================================
+// FUNÇÃO getProjectDetails CORRIGIDA
+// =========================================================
 const getProjectDetails = async (
   slug: string,
   lang: string
 ): Promise<ProjectPageData> => {
+  // 1. As variáveis ($slug, $locale) foram removidas da definição da query
+  // 2. As variáveis foram injetadas diretamente na string (ex: "${slug}")
   const query = `
-    query ProjectDetailsQuery($slug: String!, $locale: Locale!) {
-      project(where: {slug: $slug}, locales: [$locale]) {
+    query ProjectDetailsQuery {
+      project(where: {slug: "${slug}"}, locales: ["${lang}"]) {
         pageThumbnail { url }
         thumbnail { url }
         sections {
@@ -41,15 +46,20 @@ const getProjectDetails = async (
     }
   `;
 
-  return fetchHygraphQuery(query, { slug, locale: lang },0);
+  // 3. A chamada da função foi corrigida para ter apenas 2 argumentos:
+  // (query, revalidateTime)
+  return fetchHygraphQuery(query, 0);
 };
 
 export default async function Project({ params, searchParams }: ProjectProps) {
   const lang = searchParams.lang || "en";
   const data = await getProjectDetails(params.slug, lang);
 
-  if (!data || !data.project) {
-    return <h2>Projeto não encontrado.</h2>;
+  // Corrigi a verificação para ser mais segura
+  if (!data?.project) {
+    // Você pode usar notFound() ou um componente customizado
+    notFound();
+    // return <h2>Projeto não encontrado.</h2>;
   }
 
   return (
@@ -61,7 +71,8 @@ export default async function Project({ params, searchParams }: ProjectProps) {
 }
 
 // =======================================================================
-// PODE APAGAR OU COMENTAR ESTA FUNÇÃO INTEIRA
+// A função generateStaticParams está corretamente comentada,
+// já que você está usando `export const dynamic = "force-dynamic";`
 // =======================================================================
 /*
 export async function generateStaticParams() {
@@ -94,10 +105,11 @@ export async function generateMetadata({
 
   return {
     title: project.title,
-    description: project.description.text,
+    // Adicionado 'optional chaining' (?.), caso a descrição seja nula
+    description: project.description?.text,
     openGraph: {
       images: [
-        // Adicionamos uma verificação: só incluir a imagem se ela existir
+        // Sua lógica para verificar se a thumbnail existe está ótima!
         ...(project.thumbnail
           ? [
               {
