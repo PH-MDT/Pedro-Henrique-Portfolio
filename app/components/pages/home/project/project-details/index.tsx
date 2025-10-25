@@ -17,14 +17,17 @@ type ProjectDetailsProps = {
 };
 
 export const ProjectDetails = ({ project }: ProjectDetailsProps) => {
-  const imageUrl = project.pageThumbnail?.url || project.thumbnail.url;
+  const pageThumbnailUrl = project.pageThumbnail?.url;
+  const background = pageThumbnailUrl
+    ? `url(/images/hero-bg2.jpg) no-repeat center/cover, url(${pageThumbnailUrl}) no-repeat center/cover`
+    : `url(/images/hero-bg2.jpg) no-repeat center/cover`;
 
   return (
     <section className="w-full sm:min-h-[750px] flex flex-col items-center justify-end relative pb-10 sm:pb-24 py-24 px-6 overflow-hidden">
       <motion.div
         className="absolute inset-0 z-[-1]"
         style={{
-          background: `url(/images/hero-bg2.jpg) no-repeat center/cover, url(${imageUrl}) no-repeat center/cover`,
+          background: background,
         }}
         initial={{ opacity: 0, scale: 1.3 }}
         animate={{ opacity: 1, scale: 1 }}
